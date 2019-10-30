@@ -1,0 +1,21 @@
+version: '2'
+services:
+  database:
+    build: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: myPassword1
+      MYSQL_DATABASE: test
+  appswift:
+    build: server
+    depends_on: [database]
+    links:
+      - database
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_NAME: test
+      DATABASE_HOST: database
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: myPassword1
